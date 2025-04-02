@@ -4,7 +4,8 @@ import {
   BookOpen, 
   Calendar, 
   FileText, 
-  MessageSquare 
+  MessageSquare,
+  Brain
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -24,7 +25,28 @@ interface ResourcesTabProps {
 export default function ResourcesTab({ userId }: ResourcesTabProps) {
   return (
     <div className="container mx-auto py-8 px-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* IBM Watson AI 文档分析助手卡片 */}
+        <Card className="overflow-hidden border-0 shadow-md transition-all duration-300 hover:shadow-lg">
+          <div className="bg-gradient-to-r from-blue-100 to-blue-200 px-6 py-4">
+            <CardTitle className="flex items-center text-lg">
+              <Brain className="mr-3 h-5 w-5 text-blue-700" />
+              IBM Watson AI
+            </CardTitle>
+          </div>
+          <CardContent className="p-6">
+            <p className="mb-6 text-muted-foreground h-24">
+              Utilize IBM Watson AI&apos;s powerful document analysis capabilities to quickly obtain document summaries
+            </p>
+            <Link href={`/employee-dashboard/${userId}/watson`}>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                <Brain className="mr-2 h-5 w-5" />
+                Document Intelligence
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
         {/* Resource Library Card */}
         <Card className="overflow-hidden border-0 shadow-md transition-all duration-300 hover:shadow-lg">
           <div className="bg-gradient-to-r from-primary/5 to-primary/10 px-6 py-4">
