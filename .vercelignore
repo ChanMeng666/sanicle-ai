@@ -1,0 +1,5 @@
+# Ignore pnpm lockfile to regenerate it during build
+pnpm-lock.yaml
+
+# Ignore node_modules
+node_modules 
