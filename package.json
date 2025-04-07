@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^0.0.51",
+    "@ant-design/icons": "^5.3.0",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -38,6 +39,7 @@
     "@vercel/blob": "^0.24.1",
     "@vercel/postgres": "^0.10.0",
     "ai": "3.4.9",
+    "antd": "^5.15.3",
     "bcrypt-ts": "^5.0.2",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",

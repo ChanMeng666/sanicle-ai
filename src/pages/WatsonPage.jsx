@@ -10,13 +10,13 @@ const WatsonPage = () => {
     <Layout className="site-layout" style={{ minHeight: '100vh' }}>
       <Content style={{ margin: '0 16px' }}>
         <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>首页</Breadcrumb.Item>
-          <Breadcrumb.Item>工具</Breadcrumb.Item>
-          <Breadcrumb.Item>Watson文档分析</Breadcrumb.Item>
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>Tools</Breadcrumb.Item>
+          <Breadcrumb.Item>Watson Document Analysis</Breadcrumb.Item>
         </Breadcrumb>
         
         <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-          <Title level={2} style={{ marginBottom: '24px' }}>IBM Watson文档分析工具</Title>
+          <Title level={2} style={{ marginBottom: '24px' }}>IBM Watson Document Analysis Tool</Title>
           <WatsonDocAnalyzer />
         </div>
       </Content>

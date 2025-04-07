@@ -145,20 +145,20 @@ function generateMockAnalysisResult(text: string, analysisType: string): any {
         mockResult = `Comprehensive analysis of: "${firstFewWords}"\n\nThis document covers several important topics and presents information in a structured manner. The content appears to be well-organized and contains valuable information related to the subject matter.\n\n(Note: This is a simulated result due to API quota limitations. Please try again later when the quota refreshes.)`;
     }
   } 
-  // For Chinese documents
+  // For Chinese documents (keeping these for backward compatibility but translated to English)
   else {
     switch (analysisType) {
       case 'summary':
-        mockResult = `文档分析摘要: "${firstFewWords}"\n\n该文档似乎讨论了与所提供内容相关的重要主题。关键点包括文本中呈现的主要观点、支持证据和结论。\n\n(注：由于API配额限制，这是模拟结果。请在配额刷新后再次尝试。)`;
+        mockResult = `Document analysis summary: "${firstFewWords}"\n\nThe document appears to discuss important topics related to the provided content. Key points include the main ideas presented in the text, supporting evidence, and conclusions.\n\n(Note: This is a simulated result due to API quota limitations. Please try again later when the quota refreshes.)`;
         break;
       case 'keywords':
-        mockResult = `基于文档: "${firstFewWords}"\n\n确定的关键概念：\n1. 文档分析\n2. 内容提取\n3. 信息处理\n4. 文本评估\n5. 数据解释\n\n(注：由于API配额限制，这是模拟结果。请在配额刷新后再次尝试。)`;
+        mockResult = `Based on document: "${firstFewWords}"\n\nKey concepts identified:\n1. Document analysis\n2. Content extraction\n3. Information processing\n4. Text evaluation\n5. Data interpretation\n\n(Note: This is a simulated result due to API quota limitations. Please try again later when the quota refreshes.)`;
         break;
       case 'structure':
-        mockResult = `文档结构分析: "${firstFewWords}"\n\n该文档似乎结构化为引言、正文部分和结论。写作风格信息丰富，并按照逻辑顺序组织。\n\n(注：由于API配额限制，这是模拟结果。请在配额刷新后再次尝试。)`;
+        mockResult = `Document structure analysis: "${firstFewWords}"\n\nThe document appears to be structured with an introduction, main body sections, and conclusion. The writing style is informative and organized in a logical sequence.\n\n(Note: This is a simulated result due to API quota limitations. Please try again later when the quota refreshes.)`;
         break;
       default:
-        mockResult = `综合分析: "${firstFewWords}"\n\n该文档涵盖了几个重要主题，并以结构化的方式呈现信息。内容似乎组织良好，包含与主题相关的有价值信息。\n\n(注：由于API配额限制，这是模拟结果。请在配额刷新后再次尝试。)`;
+        mockResult = `Comprehensive analysis: "${firstFewWords}"\n\nThis document covers several important topics and presents information in a structured manner. The content appears to be well-organized and contains valuable information related to the subject matter.\n\n(Note: This is a simulated result due to API quota limitations. Please try again later when the quota refreshes.)`;
     }
   }
   

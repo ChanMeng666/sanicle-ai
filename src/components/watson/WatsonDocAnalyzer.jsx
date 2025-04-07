@@ -12,19 +12,19 @@ const WatsonDocAnalyzer = () => {
   const [documentText, setDocumentText] = useState('');
   const [analysisType, setAnalysisType] = useState('summary');
   
-  // 处理文件上传
+  // Handle file upload
   const handleFileUpload = async (file) => {
     try {
       const text = await readFileAsText(file);
       setDocumentText(text);
-      return false; // 阻止自动上传
+      return false; // Prevent automatic upload
     } catch (error) {
-      message.error('读取文件失败，请重试');
+      message.error('Failed to read file, please try again');
       return false;
     }
   };
   
-  // 读取文件为文本
+  // Read file as text
   const readFileAsText = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -34,20 +34,20 @@ const WatsonDocAnalyzer = () => {
     });
   };
   
-  // 处理文档分析
+  // Handle document analysis
   const handleDocumentAnalysis = async () => {
     if (!documentText.trim()) {
-      message.warning('请输入或上传文档内容');
+      message.warning('Please enter or upload document content');
       return;
     }
     
     setLoading(true);
     try {
       const response = await WatsonService.analyzeDocument(documentText, analysisType);
-      setResult(response.results?.[0]?.generated_text || '分析未返回结果');
+      setResult(response.results?.[0]?.generated_text || 'Analysis returned no results');
     } catch (error) {
-      console.error('文档分析出错:', error);
-      message.error('文档分析失败，请重试');
+      console.error('Document analysis error:', error);
+      message.error('Document analysis failed, please try again');
     } finally {
       setLoading(false);
     }
@@ -55,17 +55,17 @@ const WatsonDocAnalyzer = () => {
 
   return (
     <div className="watson-analyzer-container" style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Title level={2}>Watson文档智能分析助手</Title>
+      <Title level={2}>Watson Document Intelligent Analysis Assistant</Title>
       <Paragraph>
-        使用IBM Watson AI强大的llama-3-405b-instruct模型分析文档内容，生成摘要并提取关键信息。
+        Use IBM Watson AI's powerful llama-3-405b-instruct model to analyze document content, generate summaries, and extract key information.
       </Paragraph>
       
-      <Card title="文档输入" style={{ marginBottom: '20px' }}>
+      <Card title="Document Input" style={{ marginBottom: '20px' }}>
         <TextArea 
           rows={10} 
           value={documentText}
           onChange={(e) => setDocumentText(e.target.value)}
-          placeholder="请在此输入文档内容或使用下方按钮上传TXT文件..."
+          placeholder="Enter document content here or use the button below to upload a TXT file..."
           style={{ marginBottom: '15px' }}
         />
         
@@ -75,7 +75,7 @@ const WatsonDocAnalyzer = () => {
             accept=".txt,.md,.json,.csv"
             showUploadList={false}
           >
-            <Button icon={<UploadOutlined />}>上传文档</Button>
+            <Button icon={<UploadOutlined />}>Upload Document</Button>
           </Upload>
           
           <Button 
@@ -85,7 +85,7 @@ const WatsonDocAnalyzer = () => {
             style={{ marginLeft: '10px' }}
             disabled={!documentText.trim()}
           >
-            分析文档
+            Analyze Document
           </Button>
         </div>
         
@@ -93,20 +93,20 @@ const WatsonDocAnalyzer = () => {
           onChange={(e) => setAnalysisType(e.target.value)} 
           value={analysisType}
         >
-          <Radio value="summary">生成摘要</Radio>
-          <Radio value="keywords">提取关键词</Radio>
-          <Radio value="structure">分析结构</Radio>
+          <Radio value="summary">Generate Summary</Radio>
+          <Radio value="keywords">Extract Keywords</Radio>
+          <Radio value="structure">Analyze Structure</Radio>
         </Radio.Group>
       </Card>
       
       {loading && (
         <div style={{ textAlign: 'center', margin: '20px 0' }}>
-          <Spin size="large" tip="正在分析文档..." />
+          <Spin size="large" tip="Analyzing document..." />
         </div>
       )}
       
       {result && (
-        <Card title="分析结果" className="result-card">
+        <Card title="Analysis Results" className="result-card">
           <div style={{ whiteSpace: 'pre-wrap' }}>
             {result}
           </div>
