@@ -18,12 +18,12 @@ import { AppointmentsTab } from '../components/AppointmentsTab';
 import ResourcesTab from './components/ResourcesTab';
 
 export default function EmployeeDashboard({ params }: { params: { userId: string } }) {
-  console.log("员工仪表盘页面加载，用户ID:", params.userId);
+  console.log("Employee dashboard page loaded, user ID:", params.userId);
   
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      console.log("未认证用户，重定向到登录页");
+      console.log("Unauthenticated user, redirecting to login page");
       router.replace('/login');
     },
   });
@@ -34,11 +34,11 @@ export default function EmployeeDashboard({ params }: { params: { userId: string
     (tabParam as DashboardTab) || 'overview'
   );
   
-  // 紧急修复：如果页面加载超过5秒但仍未完成认证，强制刷新
+  // Emergency fix: If page loading exceeds 5 seconds but authentication not complete, force refresh
   useEffect(() => {
     const timer = setTimeout(() => {
       if (status === 'loading') {
-        console.log("会话加载超时，尝试刷新页面");
+        console.log("Session loading timeout, attempting to refresh page");
         window.location.reload();
       }
     }, 5000);
@@ -55,27 +55,27 @@ export default function EmployeeDashboard({ params }: { params: { userId: string
 
   // Redirect if user ID doesn't match session
   useEffect(() => {
-    console.log("会话状态:", status, "用户:", session?.user?.id);
+    console.log("Session status:", status, "User:", session?.user?.id);
     
     if (session?.user && session.user.id !== params.userId) {
-      console.log("用户ID不匹配，重定向到正确的仪表盘");
+      console.log("User ID mismatch, redirecting to correct dashboard");
       router.replace(`/employee-dashboard/${session.user.id}`);
     }
   }, [session, params.userId, router]);
 
   // Loading state
   if (status === 'loading') {
-    console.log("仪表盘加载中...");
+    console.log("Dashboard loading...");
     return <LoadingView />;
   }
 
   // No session
   if (!session?.user) {
-    console.log("无会话信息，返回null");
+    console.log("No session information, returning null");
     return null;
   }
 
-  console.log("仪表盘渲染，用户:", session.user.name, "ID:", session.user.id);
+  console.log("Dashboard rendering, user:", session.user.name, "ID:", session.user.id);
 
   return (
     <div className="container mx-auto px-4 py-6">
