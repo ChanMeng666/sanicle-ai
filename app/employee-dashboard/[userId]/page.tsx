@@ -29,7 +29,7 @@ export default function EmployeeDashboard({ params }: { params: { userId: string
   });
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tabParam = searchParams.get('tab');
+  const tabParam = searchParams?.get('tab');
   const [activeTab, setActiveTab] = useState<DashboardTab>(
     (tabParam as DashboardTab) || 'overview'
   );
