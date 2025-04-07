@@ -14,7 +14,7 @@ export type AnalysisType = 'summary' | 'keywords' | 'structure';
 
 const API_KEY = 'GsM9W1S79SM4iydzc_x6FgMX-bOnFz0unA9P1AIF6zZP';
 const PROJECT_ID = 'e0e2029b-8452-40ef-8abe-4c46e9789521';
-const MODEL_ID = 'meta-llama/llama-3-405b-instruct';
+const MODEL_ID = 'meta-llama/llama-3-3-70b-instruct';
 const API_URL = 'https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29';
 
 class WatsonService {
