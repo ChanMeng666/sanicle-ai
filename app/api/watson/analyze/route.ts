@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_KEY = 'j7aNOU6BcA-4-3BGbFKnm3VAgu2Np71U8HrTPHuKNWI0';
-const PROJECT_ID = '0dfba07f-e18a-4468-879e-3c055588f361';
+const API_KEY = 'GsM9W1S79SM4iydzc_x6FgMX-bOnFz0unA9P1AIF6zZP';
+const PROJECT_ID = 'e0e2029b-8452-40ef-8abe-4c46e9789521';
 const MODEL_ID = 'meta-llama/llama-3-405b-instruct';
 const API_URL = 'https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29';
 
