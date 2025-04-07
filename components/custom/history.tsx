@@ -45,7 +45,8 @@ import {
 } from "../ui/sheet";
 
 export const History = ({ user }: { user: User | undefined }) => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string | undefined;
   const pathname = usePathname();
 
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
