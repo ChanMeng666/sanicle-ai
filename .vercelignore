@@ -1,5 +1,8 @@
-# Ignore pnpm lockfile to regenerate it during build
-pnpm-lock.yaml
-
 # Ignore node_modules
-node_modules 
+node_modules
+
+# Ignore development files
+.git
+.github
+README.md
+*.log 
