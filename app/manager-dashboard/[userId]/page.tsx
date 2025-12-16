@@ -14,8 +14,9 @@ export const metadata = {
   description: "Manage your team, track performance, and view reports",
 };
 
-export default async function ManagerDashboardPage({ params }: { params: { userId: string } }) {
-  const user = await getUserById(params.userId);
+export default async function ManagerDashboardPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = await params;
+  const user = await getUserById(userId);
 
   if (!user || user.role !== "manager") {
     notFound();
@@ -35,8 +36,8 @@ export default async function ManagerDashboardPage({ params }: { params: { userI
         heading="Team Management Dashboard"
         text="Manage your team, track performance, and approve requests."
       >
-        <ButtonLink 
-          href={`/manager-dashboard/${params.userId}/reports`} 
+        <ButtonLink
+          href={`/manager-dashboard/${userId}/reports`}
           variant="outline"
           className="text-xs sm:text-sm h-8 sm:h-9 w-full sm:w-auto px-2 sm:px-4"
         >
@@ -80,11 +81,11 @@ export default async function ManagerDashboardPage({ params }: { params: { userI
           <TeamMetrics />
         </div>
         <div className="col-span-1 md:col-span-3">
-          <TeamActivities userId={params.userId} />
+          <TeamActivities userId={userId} />
         </div>
       </div>
 
-      <TeamMembers managerId={params.userId} />
+      <TeamMembers managerId={userId} />
     </DashboardShell>
   );
 } 

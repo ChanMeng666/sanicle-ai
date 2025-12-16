@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -14,7 +14,8 @@ import { submitFeedback } from './services';
 import FeedbackForm from './components/FeedbackForm';
 import SuccessMessage from './components/SuccessMessage';
 
-export default function SubmitFeedback({ params }: { params: { userId: string } }) {
+export default function SubmitFeedback({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -50,12 +51,12 @@ export default function SubmitFeedback({ params }: { params: { userId: string } 
 
   return (
     <DashboardLayout
-      userId={params.userId}
+      userId={userId}
       title="Submit Feedback"
       description="Share your thoughts and experiences about menstrual and menopause health support in the workplace."
     >
       {/* Hidden link for redirection */}
-      <Link ref={linkRef} href={`/employee-dashboard/${params.userId}?tab=resources`} className="hidden" />
+      <Link ref={linkRef} href={`/employee-dashboard/${userId}?tab=resources`} className="hidden" />
       
       <div className="max-w-2xl mx-auto">
         <Card className="shadow-sm">

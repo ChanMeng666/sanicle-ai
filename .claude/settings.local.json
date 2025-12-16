@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(npm audit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfix(security): resolve critical Dependabot security vulnerabilities\n\n- Upgrade Next.js from 15.0.0-canary.152 to 15.5.9\n  - Fix critical RCE in React flight protocol (CVE-2025-55182)\n  - Fix high severity DoS with Server Components\n  - Fix moderate SSRF and source code exposure vulnerabilities\n- Upgrade next-auth from 5.0.0-beta.22 to 5.0.0-beta.30\n  - Fix email misdelivery vulnerability\n- Upgrade React/React-DOM to ^19.0.1 (stable patched version)\n- Upgrade eslint-config-next to 15.5.9 (fixes glob command injection)\n- Upgrade drizzle-kit to ^0.31.8\n- Add esbuild override to ^0.25.0 (fixes dev server vulnerability)\n- Update all pages and API routes for Next.js 15 breaking changes:\n  - Convert params to Promise-based API\n  - Add use() hook for Client Components with dynamic params\n  - Await headers() call (now returns Promise)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
+    ]
+  }
+}

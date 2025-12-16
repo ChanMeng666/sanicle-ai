@@ -22,16 +22,16 @@ const EventUpdateSchema = z.object({
 // GET - Retrieve a specific event by ID
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  
+
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  
+
   try {
-    const id = params.id;
+    const { id } = await params;
     
     const [selectedEvent] = await db.select()
       .from(event)
@@ -54,17 +54,17 @@ export async function GET(
 // PATCH - Update event information
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  
+
   // Only HR role or admin can update events
   if (!session || (session.user.role !== "hr" && session.user.role !== "admin")) {
     return NextResponse.json({ error: "Unauthorized, only HR or admin can update events" }, { status: 403 });
   }
-  
+
   try {
-    const id = params.id;
+    const { id } = await params;
     const body = await request.json();
     
     const validatedData = EventUpdateSchema.safeParse(body);
@@ -140,17 +140,17 @@ export async function PATCH(
 // DELETE - Delete a specific event
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  
+
   // Only HR role or admin can delete events
   if (!session || (session.user.role !== "hr" && session.user.role !== "admin")) {
     return NextResponse.json({ error: "Unauthorized, only HR or admin can delete events" }, { status: 403 });
   }
-  
+
   try {
-    const id = params.id;
+    const { id } = await params;
     
     // Delete event
     const deleted = await db.delete(event)

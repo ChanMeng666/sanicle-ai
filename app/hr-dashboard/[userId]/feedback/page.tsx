@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 
 import { Feedback } from './types';
 import { fetchFeedback } from './services';
@@ -13,7 +13,8 @@ import { LoadingState } from './components/LoadingState';
  * HR Dashboard Feedback page
  * Displays employee feedback with filtering capabilities
  */
-export default function FeedbackDashboard({ params }: { params: { userId: string } }) {
+export default function FeedbackDashboard({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -43,10 +44,10 @@ export default function FeedbackDashboard({ params }: { params: { userId: string
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <FeedbackHeader 
-        userId={params.userId} 
-        categoryFilter={categoryFilter} 
-        onFilterChange={handleFilterChange} 
+      <FeedbackHeader
+        userId={userId}
+        categoryFilter={categoryFilter}
+        onFilterChange={handleFilterChange}
       />
 
       {loading ? (

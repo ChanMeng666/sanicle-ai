@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Calendar, List, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -24,7 +24,8 @@ import DashboardLayout from "../../components/DashboardLayout";
  * Employee Events Page
  * Enhanced for mobile responsiveness
  */
-export default function EmployeeEventsPage({ params }: { params: { userId: string } }) {
+export default function EmployeeEventsPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -59,8 +60,8 @@ export default function EmployeeEventsPage({ params }: { params: { userId: strin
     setError(eventsData.error);
     
     // Get user registrations
-    if (params.userId) {
-      const registrationsData = await api.fetchUserRegistrations(params.userId);
+    if (userId) {
+      const registrationsData = await api.fetchUserRegistrations(userId);
       setRegistrations(registrationsData);
     }
     
@@ -83,7 +84,7 @@ export default function EmployeeEventsPage({ params }: { params: { userId: strin
     
     if (success) {
       // Refresh registration data
-      const registrationsData = await api.fetchUserRegistrations(params.userId);
+      const registrationsData = await api.fetchUserRegistrations(userId);
       setRegistrations(registrationsData);
     }
   };
@@ -99,10 +100,10 @@ export default function EmployeeEventsPage({ params }: { params: { userId: strin
         });
       }
     });
-    
+
     if (success) {
       // Refresh registration data
-      const registrationsData = await api.fetchUserRegistrations(params.userId);
+      const registrationsData = await api.fetchUserRegistrations(userId);
       setRegistrations(registrationsData);
     }
   };
@@ -124,8 +125,8 @@ export default function EmployeeEventsPage({ params }: { params: { userId: strin
 
   return (
     <DashboardLayout
-      userId={params.userId}
-      title="Health Events Calendar" 
+      userId={userId}
+      title="Health Events Calendar"
       description="View, register and manage your health-related events"
     >
       <div className="flex flex-col space-y-3 sm:space-y-6">

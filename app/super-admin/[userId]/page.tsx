@@ -11,8 +11,9 @@ export const metadata = {
   description: "Manage the entire platform, users, organizations, and system settings",
 };
 
-export default async function SuperAdminDashboardPage({ params }: { params: { userId: string } }) {
-  const user = await getUserById(params.userId);
+export default async function SuperAdminDashboardPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = await params;
+  const user = await getUserById(userId);
 
   if (!user || !user.is_super_admin) {
     notFound();

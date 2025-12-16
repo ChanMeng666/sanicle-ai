@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/react';
 import { Calendar, List } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -19,7 +19,8 @@ import { fetchEvents, deleteEvent as deleteEventService } from './services';
 import { Event, EventFilter } from './types';
 import { filterEvents } from './utils';
 
-export default function ManageEventsPage({ params }: { params: { userId: string } }) {
+export default function ManageEventsPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -81,7 +82,7 @@ export default function ManageEventsPage({ params }: { params: { userId: string 
 
   // Navigate to create event page
   const handleCreateEvent = () => {
-    router.push(`/hr-dashboard/${params.userId}/events/create`);
+    router.push(`/hr-dashboard/${userId}/events/create`);
   };
 
   // Load events on component mount
@@ -93,10 +94,10 @@ export default function ManageEventsPage({ params }: { params: { userId: string 
 
   // Ensure user is accessing their own dashboard
   useEffect(() => {
-    if (session?.user && session.user.id !== params.userId) {
+    if (session?.user && session.user.id !== userId) {
       router.replace(`/hr-dashboard/${session.user.id}/events/manage`);
     }
-  }, [session, params.userId, router]);
+  }, [session, userId, router]);
 
   // Check if user has HR or admin permissions
   if (session?.user?.role !== 'hr' && session?.user?.role !== 'admin') {
@@ -109,9 +110,9 @@ export default function ManageEventsPage({ params }: { params: { userId: string 
 
   return (
     <div className="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
-      <HeaderSection 
-        userId={params.userId} 
-        onCreateEvent={handleCreateEvent} 
+      <HeaderSection
+        userId={userId}
+        onCreateEvent={handleCreateEvent}
       />
 
       <Tabs defaultValue="calendar" className="space-y-3 sm:space-y-6">
@@ -148,12 +149,12 @@ export default function ManageEventsPage({ params }: { params: { userId: string 
           value="list"
           className="border border-muted/50 dark:border-muted/30 rounded-lg bg-card shadow-sm dark:shadow-primary/5 transition-all duration-200"
         >
-          <ListView 
+          <ListView
             events={events}
             loading={loading}
             error={error}
             filter={filter}
-            userId={params.userId}
+            userId={userId}
             onCreateEvent={handleCreateEvent}
             onRetry={loadEvents}
             onViewDetails={(event) => {
@@ -169,11 +170,11 @@ export default function ManageEventsPage({ params }: { params: { userId: string 
       </Tabs>
       
       {/* Event Details Dialog */}
-      <EventDetailsDialog 
+      <EventDetailsDialog
         open={showEventDetails}
         onOpenChange={setShowEventDetails}
         event={selectedEvent}
-        userId={params.userId}
+        userId={userId}
         onDelete={() => {
           setShowEventDetails(false);
           setDeleteConfirmOpen(true);

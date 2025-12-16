@@ -46,7 +46,7 @@ const getDashboardPath = (user: any) => {
  */
 export const Navbar = async () => {
   let session = await auth();
-  const headersList = headers();
+  const headersList = await headers();
   const pathname = headersList.get("x-pathname") || "";
   
   // Log the pathname for debugging

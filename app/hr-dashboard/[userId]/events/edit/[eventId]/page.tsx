@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -29,7 +29,8 @@ import UnauthorizedView from './components/UnauthorizedView';
 import ErrorView from './components/ErrorView';
 import LoadingView from './components/LoadingView';
 
-export default function EditEventPage({ params }: { params: { userId: string, eventId: string } }) {
+export default function EditEventPage({ params }: { params: Promise<{ userId: string; eventId: string }> }) {
+  const { userId, eventId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -55,7 +56,7 @@ export default function EditEventPage({ params }: { params: { userId: string, ev
       setFetchError(null);
       
       try {
-        const result = await fetchEvent(params.eventId);
+        const result = await fetchEvent(eventId);
         
         if (result.error) {
           throw new Error(result.error);
@@ -76,7 +77,7 @@ export default function EditEventPage({ params }: { params: { userId: string, ev
     if (session?.user) {
       getEvent();
     }
-  }, [session, params.eventId, form]);
+  }, [session, eventId, form]);
 
   const onSubmit = async (values: FormValues) => {
     setSubmitting(true);
@@ -88,7 +89,7 @@ export default function EditEventPage({ params }: { params: { userId: string, ev
       const eventData = processFormData(values);
       
       // Update event using API
-      const result = await updateEvent(params.eventId, eventData);
+      const result = await updateEvent(eventId, eventData);
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to update event');
@@ -96,7 +97,7 @@ export default function EditEventPage({ params }: { params: { userId: string, ev
 
       setSubmitStatus('success');
       setTimeout(() => {
-        router.push(`/hr-dashboard/${params.userId}/events/manage`);
+        router.push(`/hr-dashboard/${userId}/events/manage`);
       }, 1500);
     } catch (error) {
       console.error('Update event error:', error);

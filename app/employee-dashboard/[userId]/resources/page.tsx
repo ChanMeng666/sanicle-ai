@@ -3,7 +3,7 @@
 import { Search, Grid, List } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 
 // UI Components
 import { Badge } from "@/components/ui/badge";
@@ -64,7 +64,8 @@ const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
  * Employee Resources Page
  * Enhanced for mobile responsiveness
  */
-export default function EmployeeResourcesPage({ params }: { params: { userId: string } }) {
+export default function EmployeeResourcesPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -135,8 +136,8 @@ export default function EmployeeResourcesPage({ params }: { params: { userId: st
   };
 
   return (
-    <DashboardLayout 
-      userId={params.userId}
+    <DashboardLayout
+      userId={userId}
       title="Health Resource Library"
       description="Access health resources, guides and policy documents to support your wellbeing"
     >

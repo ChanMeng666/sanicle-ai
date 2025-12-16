@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import {
@@ -28,7 +28,8 @@ import SearchAndFilters from './components/SearchAndFilters';
 import ResourceTable from './components/ResourceTable';
 import DeleteConfirmationDialog from './components/DeleteConfirmationDialog';
 
-export default function ManageResourcesPage({ params }: { params: { userId: string } }) {
+export default function ManageResourcesPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -129,7 +130,7 @@ export default function ManageResourcesPage({ params }: { params: { userId: stri
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <HeaderSection userId={params.userId} />
+      <HeaderSection userId={userId} />
 
       <Card className="shadow-sm border-muted">
         <CardHeader className="border-b bg-muted/30 pb-5">
@@ -148,7 +149,7 @@ export default function ManageResourcesPage({ params }: { params: { userId: stri
             <ErrorView error={error} onRetry={loadResources} />
           ) : sortedResources.length === 0 ? (
             <EmptyView 
-              userId={params.userId} 
+              userId={userId} 
               hasFilters={hasFilters} 
               onClearFilters={handleClearFilters} 
             />

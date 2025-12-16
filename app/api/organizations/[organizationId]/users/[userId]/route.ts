@@ -10,11 +10,11 @@ import { getUserById, updateUserRole } from "@/db/queries";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { organizationId: string, userId: string } }
+  { params }: { params: Promise<{ organizationId: string; userId: string }> }
 ) {
   try {
     const session = await auth();
-    const { organizationId, userId } = params;
+    const { organizationId, userId } = await params;
     
     // Check authentication
     if (!session || !session.user) {
@@ -79,11 +79,11 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { organizationId: string, userId: string } }
+  { params }: { params: Promise<{ organizationId: string; userId: string }> }
 ) {
   try {
     const session = await auth();
-    const { organizationId, userId } = params;
+    const { organizationId, userId } = await params;
     
     // Check authentication
     if (!session || !session.user) {

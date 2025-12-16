@@ -8,7 +8,7 @@ import { resourceFile } from "@/db/schema";
 // POST - Increase resource download count
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
 
@@ -17,7 +17,7 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const id = params.id;
+  const { id } = await params;
 
   if (!id) {
     return NextResponse.json({ error: "Missing resource ID" }, { status: 400 });

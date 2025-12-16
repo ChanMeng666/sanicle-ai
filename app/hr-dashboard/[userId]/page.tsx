@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,7 +21,8 @@ import ResourcesTab from './components/tabs/ResourcesTab';
  * HR Dashboard Page
  * Enhanced for mobile responsiveness
  */
-export default function HRDashboard({ params }: { params: { userId: string } }) {
+export default function HRDashboard({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -42,10 +43,10 @@ export default function HRDashboard({ params }: { params: { userId: string } }) 
 
   // Redirect if user ID doesn't match session
   useEffect(() => {
-    if (session?.user && session.user.id !== params.userId) {
+    if (session?.user && session.user.id !== userId) {
       router.replace(`/hr-dashboard/${session.user.id}`);
     }
-  }, [session, params.userId, router]);
+  }, [session, userId, router]);
 
   // Update active tab when URL parameter changes
   useEffect(() => {
@@ -87,9 +88,9 @@ export default function HRDashboard({ params }: { params: { userId: string } }) 
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-6 max-w-[100vw] overflow-hidden">
-      <DashboardHeader 
-        userName={session.user.name || 'User'} 
-        userId={params.userId} 
+      <DashboardHeader
+        userName={session.user.name || 'User'}
+        userId={userId}
         profileImageUrl={session.user.profileImageUrl}
       />
 
@@ -128,7 +129,7 @@ export default function HRDashboard({ params }: { params: { userId: string } }) 
         
         <TabsContent value="resources" className="space-y-4">
           <ResourcesTab
-            userId={params.userId}
+            userId={userId}
             recentResources={recentResources}
             resourcesLoading={resourcesLoading}
             resourcesError={resourcesError}

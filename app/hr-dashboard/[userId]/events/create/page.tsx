@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -28,7 +28,8 @@ import ResourceMaterials from './components/ResourceMaterials';
 import FormStatusMessage from './components/FormStatusMessage';
 import UnauthorizedView from './components/UnauthorizedView';
 
-export default function CreateEventPage({ params }: { params: { userId: string } }) {
+export default function CreateEventPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -66,7 +67,7 @@ export default function CreateEventPage({ params }: { params: { userId: string }
       
       // Redirect after success
       setTimeout(() => {
-        router.push(`/hr-dashboard/${params.userId}`);
+        router.push(`/hr-dashboard/${userId}`);
       }, 1500);
       
     } catch (error) {
@@ -86,7 +87,7 @@ export default function CreateEventPage({ params }: { params: { userId: string }
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <Link href={`/hr-dashboard/${params.userId}?tab=resources`}>
+        <Link href={`/hr-dashboard/${userId}?tab=resources`}>
           <Button variant="ghost" size="sm" className="group mb-4 pl-1 flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
             <span>Back to Dashboard</span>
@@ -124,7 +125,7 @@ export default function CreateEventPage({ params }: { params: { userId: string }
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push(`/hr-dashboard/${params.userId}?tab=resources`)}
+                  onClick={() => router.push(`/hr-dashboard/${userId}?tab=resources`)}
                 >
                   Cancel
                 </Button>

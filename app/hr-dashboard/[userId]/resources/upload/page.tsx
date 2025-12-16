@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import {
@@ -22,7 +22,8 @@ import HeaderSection from './components/HeaderSection';
 import UnauthorizedView from './components/UnauthorizedView';
 import ResourceForm from './components/ResourceForm';
 
-export default function UploadResourcePage({ params }: { params: { userId: string } }) {
+export default function UploadResourcePage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -54,7 +55,7 @@ export default function UploadResourcePage({ params }: { params: { userId: strin
       if (result.success) {
         setUploadStatus('success');
         setTimeout(() => {
-          router.push(`/hr-dashboard/${params.userId}/resources/manage`);
+          router.push(`/hr-dashboard/${userId}/resources/manage`);
         }, 1500);
       } else if (result.error) {
         setUploadStatus('error');
@@ -88,7 +89,7 @@ export default function UploadResourcePage({ params }: { params: { userId: strin
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <HeaderSection userId={params.userId} />
+      <HeaderSection userId={userId} />
 
       <Card className="shadow-sm border-muted">
         <CardHeader className="border-b bg-muted/30">
@@ -97,7 +98,7 @@ export default function UploadResourcePage({ params }: { params: { userId: strin
         </CardHeader>
         <CardContent className="pt-8">
           <ResourceForm 
-            userId={params.userId}
+            userId={userId}
             file={file}
             uploading={uploading}
             uploadStatus={uploadStatus}

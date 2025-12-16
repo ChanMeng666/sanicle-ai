@@ -10,16 +10,17 @@ import {
 // Get a single period record
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
-    
+
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
-    const recordId = params.id;
+
+    const { id } = await params;
+    const recordId = id;
     console.log("GET /api/health-records/period/[id] - recordId:", recordId);
     
     const record = await getHealthRecordById(recordId);
@@ -66,16 +67,17 @@ export async function GET(
 // Update a single period record
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
-    
+
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
-    const recordId = params.id;
+
+    const { id } = await params;
+    const recordId = id;
     const body = await req.json();
     
     console.log("PUT /api/health-records/period/[id] - recordId:", recordId);
@@ -140,16 +142,17 @@ export async function PUT(
 // Delete a single period record
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
-    
+
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
-    const recordId = params.id;
+
+    const { id } = await params;
+    const recordId = id;
     console.log("DELETE /api/health-records/period/[id] - recordId:", recordId);
     
     // Get record to verify ownership

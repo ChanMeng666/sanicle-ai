@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { 
@@ -18,7 +19,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export default function EventsPage({ params }: { params: { userId: string } }) {
+export default function EventsPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -76,7 +78,7 @@ export default function EventsPage({ params }: { params: { userId: string } }) {
             </p>
             <Button 
               className="w-full" 
-              onClick={() => router.push(`/hr-dashboard/${params.userId}/events/create`)}
+              onClick={() => router.push(`/hr-dashboard/${userId}/events/create`)}
             >
               Create Event
             </Button>
@@ -97,7 +99,7 @@ export default function EventsPage({ params }: { params: { userId: string } }) {
             </p>
             <Button 
               className="w-full" 
-              onClick={() => router.push(`/hr-dashboard/${params.userId}/events/manage`)}
+              onClick={() => router.push(`/hr-dashboard/${userId}/events/manage`)}
             >
               View Calendar
             </Button>
@@ -118,7 +120,7 @@ export default function EventsPage({ params }: { params: { userId: string } }) {
             </p>
             <Button 
               className="w-full" 
-              onClick={() => router.push(`/hr-dashboard/${params.userId}/events/manage?tab=stats`)}
+              onClick={() => router.push(`/hr-dashboard/${userId}/events/manage?tab=stats`)}
             >
               View Statistics
             </Button>

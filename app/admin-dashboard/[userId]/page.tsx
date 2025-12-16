@@ -16,8 +16,9 @@ export const metadata = {
   description: "Manage your organization, users, and settings",
 };
 
-export default async function AdminDashboardPage({ params }: { params: { userId: string } }) {
-  const user = await getUserById(params.userId);
+export default async function AdminDashboardPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = await params;
+  const user = await getUserById(userId);
 
   if (!user || !user.organization_id) {
     notFound();
@@ -37,8 +38,8 @@ export default async function AdminDashboardPage({ params }: { params: { userId:
         heading="Admin Dashboard"
         text="Manage your organization, users, resources, and events."
       >
-        <ButtonLink 
-          href={`/admin-dashboard/${params.userId}/settings`} 
+        <ButtonLink
+          href={`/admin-dashboard/${userId}/settings`}
           variant="outline"
           className="text-xs sm:text-sm h-8 sm:h-9 w-full sm:w-auto px-2 sm:px-4"
         >
@@ -82,7 +83,7 @@ export default async function AdminDashboardPage({ params }: { params: { userId:
           <AdminMetrics />
         </div>
         <div className="col-span-1 md:col-span-3 w-full overflow-x-auto">
-          <RecentActivities userId={params.userId} />
+          <RecentActivities userId={userId} />
         </div>
       </div>
 

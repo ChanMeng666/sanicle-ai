@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -22,9 +22,10 @@ import { ChatWidgetWrapper } from '@/components/chat';
  * Employee Dashboard Page
  * Enhanced for mobile responsiveness
  */
-export default function EmployeeDashboard({ params }: { params: { userId: string } }) {
-  console.log("Employee dashboard page loading, user ID:", params.userId);
-  
+export default function EmployeeDashboard({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params);
+  console.log("Employee dashboard page loading, user ID:", userId);
+
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -62,11 +63,11 @@ export default function EmployeeDashboard({ params }: { params: { userId: string
   useEffect(() => {
     console.log("Session status:", status, "User:", session?.user?.id);
     
-    if (session?.user && session.user.id !== params.userId) {
+    if (session?.user && session.user.id !== userId) {
       console.log("User ID mismatch, redirecting to correct dashboard");
       router.replace(`/employee-dashboard/${session.user.id}`);
     }
-  }, [session, params.userId, router]);
+  }, [session, userId, router]);
 
   // Loading state
   if (status === 'loading') {
@@ -84,9 +85,9 @@ export default function EmployeeDashboard({ params }: { params: { userId: string
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-6 max-w-[100vw] overflow-hidden">
-      <DashboardHeader 
-        userName={session.user.name || 'User'} 
-        userId={params.userId} 
+      <DashboardHeader
+        userName={session.user.name || 'User'}
+        userId={userId}
         profileImageUrl={session.user.profileImageUrl}
       />
       
@@ -107,23 +108,23 @@ export default function EmployeeDashboard({ params }: { params: { userId: string
         </div>
         
         <TabsContent value="overview">
-          <OverviewTab userId={params.userId} userName={session.user.name || ''} />
+          <OverviewTab userId={userId} userName={session.user.name || ''} />
         </TabsContent>
-        
+
         <TabsContent value="cycle">
-          <CycleTab userId={params.userId} />
+          <CycleTab userId={userId} />
         </TabsContent>
-        
+
         <TabsContent value="health">
-          <HealthTab userId={params.userId} />
+          <HealthTab userId={userId} />
         </TabsContent>
-        
+
         <TabsContent value="appointments">
-          <AppointmentsTab userId={params.userId} />
+          <AppointmentsTab userId={userId} />
         </TabsContent>
-        
+
         <TabsContent value="resources">
-          <ResourcesTab userId={params.userId} />
+          <ResourcesTab userId={userId} />
         </TabsContent>
       </Tabs>
       
