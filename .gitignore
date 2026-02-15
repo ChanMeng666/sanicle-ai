@@ -62,3 +62,5 @@ __pycache__/
 /sanicle-cloud-实现AI对话功能的示例项目
 /登陆成功的示例项目
 20250310_1840_登录重定向问题的全过程复盘与分析（详细英文版）.md
+.env.preview
+.env.production
